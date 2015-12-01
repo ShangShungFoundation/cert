@@ -15,9 +15,9 @@ class Authority(models.Model):
 class Certifier(models.Model):
     """Refers to person which authorize acreditation of certificate"""
 
-    accreditation = models.ForeignKey(Accreditation)
-    role = models.TextField()
     person = models.ForeignKey("persons.Person")
+    role = models.CharField(max_length=250)
+    
 
     def __unicode__(self):
         return u"%s %s" % (self.role, self.person)

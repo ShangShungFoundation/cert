@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'authorities',
     'certifications',
     'persons',
+    'django_admin_bootstrapped',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -53,7 +54,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'ssf_cert.urls'
+ROOT_URLCONF = 'cert.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ssf_cert.wsgi.application'
+WSGI_APPLICATION = 'cert.wsgi.application'
 
 
 # Database
@@ -103,3 +104,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

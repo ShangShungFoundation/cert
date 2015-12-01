@@ -1,5 +1,7 @@
 import pycountry
+
 from django.db import models
+from django.contrib.auth.models import User
 
 from certifications.models import Accreditation
 
@@ -17,12 +19,18 @@ class Person(models.Model):
         choices=TREATMENTS, max_length=50)
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
-    birth = models.DateField()
+    birth = models.DateField(null=True, blank=True)
+
     email = models.EmailField()
-    tel = models.CharField(max_length=250)
+    tel = models.CharField(
+        null=True, blank=True, max_length=250)
+
     address = models.TextField()
     country = models.CharField(
         choices=COUNTRIES, max_length=50)
+
+    created_by = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return u"%s %s %s" % (self.treatment, self.first_name, self.last_name)
@@ -32,4 +40,7 @@ class Certificate(models.Model):
     """Certification applied to the particular person"""
 
     person = models.ForeignKey(Person)
-    issue = models.ForeignKey(Accreditation)
+    accreditation = models.ForeignKey(Accreditation)
+
+    created_by = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
