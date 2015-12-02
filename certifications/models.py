@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from locations.models import Location
+from persons.models import Person
 
 
 class Certification(models.Model):
@@ -51,3 +52,13 @@ class Accreditation(models.Model):
 
     def __unicode__(self):
         return u"%s %s at %s" % (self.certification, self.date, self.location)
+
+
+class Certificate(models.Model):
+    """Certification applied to the particular person"""
+
+    person = models.ForeignKey(Person)
+    accreditation = models.ForeignKey(Accreditation)
+
+    created_by = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)

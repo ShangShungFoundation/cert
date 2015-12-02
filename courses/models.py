@@ -1,14 +1,19 @@
 from django.db import models
 
+from django.contrib.auth.models import User
+
 from locations.models import Location
 from persons.models import Person
-from certifications.models import Accreditation
+from certifications.models import Accreditation, Certificate
+from authorities.models import Authority
 
 
 class Course(models.Model):
     STATUS = (
         (1, "in preparation"),
-        (3, "cancelled"),
+        (2, "in recrutation"),
+        (3, "finished"),
+        (4, "cancelled"),
     )
 
     title = models.CharField(max_length=250)
@@ -17,8 +22,9 @@ class Course(models.Model):
     accreditation = models.ForeignKey(
         Accreditation, blank=True, null=True)
 
-    professor = models.ForeignKey(Person, related_name='related_profesors')
-    organizer = models.ForeignKey(Person, related_name='related_organizers')
+    organizer = models.ForeignKey(Authority, related_name='related_authorities')
+    professor = models.ForeignKey(User, related_name='related_profesors')
+    manager = models.ForeignKey(User, related_name='related_manager')
 
     location = models.ForeignKey(Location)
 
@@ -35,8 +41,11 @@ class Course(models.Model):
 
     status = models.PositiveSmallIntegerField(choices=STATUS)
 
+    observations = models.TextField(
+        blank=True, null=True)
+
     def __unicode__(self):
-        return u"%s - %s - %s" % (self.name, self.place, self.country)
+        return u"%s - %s - %s" % (self.title, self.begins, self.status)
 
 
 class File(models.Model):
@@ -48,14 +57,46 @@ class File(models.Model):
     course = models.ForeignKey(Course)
     file = models.FileField()
     type = models.PositiveSmallIntegerField(choices=TYPES)
+    observations = models.TextField(
+        blank=True, null=True)
 
 
 class Participant(models.Model):
+    STATUS = (
+        (1, "recruited"),
+        (2, "participant"),
+        (3, "completed"),
+        (4, "aworded"),
+    )
+
     person = models.ForeignKey(Person)
     course = models.ForeignKey(Course)
 
-    submitted_at = models.DateField(auto_now_add=True)
-
     payed = models.DecimalField(
         max_digits=5, decimal_places=2,
+        blank=True, null=True)
+
+    status = models.PositiveSmallIntegerField(choices=STATUS)
+    certificate = models.ForeignKey(Certificate)
+
+    observations = models.TextField(
+        blank=True, null=True)
+
+    submitted_at = models.DateField(auto_now_add=True)
+
+
+class Communication(models.Model):
+    TYPES = (
+        (1, "didactic material"),
+        (2, "publicity"),
+        (3, "administrative"),
+    )
+    course = models.ForeignKey(Course)
+    subject = models.CharField(max_length=250)
+    text = models.TextField()
+    file = models.FileField(
+        null=True, blank=True)
+
+    submitted_at = models.DateField(auto_now_add=True)
+    observations = models.TextField(
         blank=True, null=True)

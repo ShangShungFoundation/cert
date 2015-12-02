@@ -3,7 +3,6 @@ import pycountry
 from django.db import models
 from django.contrib.auth.models import User
 
-from certifications.models import Accreditation
 
 COUNTRIES = [(c.alpha2, c.name) for c in pycountry.countries]
 
@@ -36,11 +35,3 @@ class Person(models.Model):
         return u"%s %s %s" % (self.treatment, self.first_name, self.last_name)
 
 
-class Certificate(models.Model):
-    """Certification applied to the particular person"""
-
-    person = models.ForeignKey(Person)
-    accreditation = models.ForeignKey(Accreditation)
-
-    created_by = models.ForeignKey(User)
-    created_at = models.DateTimeField(auto_now_add=True)

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from authorities.models import Certifier
 
-from models import Certification, Accreditation, Location
+from models import Certification, Accreditation, Certificate
 
 
 class CertificationAdmin(admin.ModelAdmin):
@@ -52,10 +52,30 @@ class AccreditationAdmin(admin.ModelAdmin):
         obj.save()
 
 
-class LocationAdmin(admin.ModelAdmin):
-    list_display = ()
+
+
+class CertificateAdmin(admin.ModelAdmin):
+    list_display = ("person", "accreditation")
+    list_filter = ( "accreditation", )
+    search_fields = ('person__second_name', 'person__email', )
+    raw_id_fields = ("person", )
+
+    fieldsets = (
+        (None, {
+            'fields': (
+                "person",
+                "accreditation",
+            )
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        #import ipdb; ipdb.set_trace()
+        if getattr(obj, 'created_by', None) is None:
+            obj.created_by_id = request.user.id
+        obj.save()
 
 
 admin.site.register(Certification, CertificationAdmin)
 admin.site.register(Accreditation, AccreditationAdmin)
-admin.site.register(Location, LocationAdmin)
+admin.site.register(Certificate, CertificateAdmin)
