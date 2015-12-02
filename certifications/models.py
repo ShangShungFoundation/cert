@@ -1,10 +1,7 @@
-import pycountry
-
 from django.db import models
 from django.contrib.auth.models import User
 
-
-COUNTRIES = [(c.alpha2, c.name) for c in pycountry.countries]
+from locations.models import Location
 
 
 class Certification(models.Model):
@@ -35,15 +32,6 @@ class Certification(models.Model):
     def __unicode__(self):
         return u"%s - %s - %s" % (self.name, self.place, self.country)
 
-
-class Location(models.Model):
-    name = models.CharField(max_length=250)
-    place = models.TextField()
-    country = models.CharField(
-        choices=COUNTRIES, max_length=5)
-
-    def __unicode__(self):
-        return u"%s - %s - %s" % (self.name, self.place, self.country)
 
 
 class Accreditation(models.Model):

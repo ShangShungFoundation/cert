@@ -40,7 +40,9 @@ INSTALLED_APPS = (
     'authorities',
     'certifications',
     'persons',
-    'django_admin_bootstrapped',
+    'locations',
+    'courses',
+    #'django_admin_bootstrapped',
 )
 
 MIDDLEWARE_CLASSES = (
