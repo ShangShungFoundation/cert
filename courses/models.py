@@ -10,21 +10,22 @@ from authorities.models import Authority
 
 class Course(models.Model):
     STATUS = (
-        (1, "in preparation"),
-        (2, "in recrutation"),
+        (1, "preparation"),
+        (2, "recrutation"),
         (3, "finished"),
         (4, "cancelled"),
     )
 
     title = models.CharField(max_length=250)
     summary = models.TextField()
+    programme = models.TextField()
 
     accreditation = models.ForeignKey(
         Accreditation, blank=True, null=True)
 
-    organizer = models.ForeignKey(Authority, related_name='related_authorities')
-    professor = models.ForeignKey(User, related_name='related_profesors')
-    manager = models.ForeignKey(User, related_name='related_manager')
+    organizer = models.ForeignKey(Authority, related_name='related_organizers)
+    professors = models.ManyToManyField(User)
+    manager = models.ForeignKey(User, related_name='related_managers')
 
     location = models.ForeignKey(Location)
 
@@ -39,9 +40,18 @@ class Course(models.Model):
     recrutation_starts = models.DateField(
         blank=True, null=True)
 
-    status = models.PositiveSmallIntegerField(choices=STATUS)
-
+    status = models.PositiveSmallIntegerField(
+        choices=STATUS, default=1)
     observations = models.TextField(
+        blank=True, null=True)
+
+    budget = models.DecimalField(
+        blank=True, null=True)
+    honoraries = models.DecimalField(
+        blank=True, null=True)
+    expences = models.DecimalField(
+        blank=True, null=True)
+    profit = models.DecimalField(
         blank=True, null=True)
 
     def __unicode__(self):
