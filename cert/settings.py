@@ -42,7 +42,8 @@ INSTALLED_APPS = (
     'persons',
     'locations',
     'courses',
-    #'django_admin_bootstrapped',
+    'crispy_forms',
+    #'pagination_tags',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'cert.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'cert/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -31,8 +31,7 @@ class Certification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return u"%s - %s - %s" % (self.name, self.place, self.country)
-
+        return u"%s - %s" % (self.name, self.authority)
 
 
 class Accreditation(models.Model):

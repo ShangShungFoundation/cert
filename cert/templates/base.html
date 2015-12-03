@@ -1,0 +1,87 @@
+<!DOCTYPE html>{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block page_title %}SSF Archive{% endblock %}</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="{{ STATIC_URL }}moment/min/moment.min.js"></script>
+    <script src="{{ STATIC_URL }}bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet" href="http://fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css">
+    <link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy|Droid+Serif' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?v=1" /> 
+
+    
+{% block css %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}" role="document">
+
+  <div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Shang Shung Foundation Archive</span>
+        </button>
+        <a class="navbar-brand" href="#">Shang Shung Foundation Archive</a>
+      </div>
+    </div>
+  </div>
+  
+<div  role="main">
+    {% if messages %}
+    <ul class="messages panel callout">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+{% block body %}
+    <header class="container">
+{% block header %}{% endblock header %}
+    </header>
+
+    <div id="main" class="container">
+{% block content %}{% endblock content %}
+    </div>
+</div><!-- /main -->
+
+
+    <footer>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <p>
+                <a href="http://www.shangshunginstitute.org/">Shang Shung Foundation</a>
+                <a href="http://www.shangshungstore.org/">Webstore</a>
+                <a href="http://www.shangshungpublications.org/">Shang Shung Publications</a>
+              </p>
+              <div class="footer-notice">
+                <p><small>Copyright © 2015 Shang Shung Foundation</small></p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </footer>
+{% endblock body %}
+
+{% block javascript_library %}
+    <script src="{{ STATIC_URL }}admin/js/admin/RelatedObjectLookups.js"></script>
+    <script src="{{ STATIC_URL }}js/app.js"></script>
+{% endblock %}
+
+{% block javascript %}{% endblock %}
+</body>
+</html>

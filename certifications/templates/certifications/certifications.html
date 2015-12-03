@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block header %}
+  <h1> SSF Certifications</h1>
+{% endblock header %}
+
+
+
+
+{% block content %}
+<p>
+	Shang Shung Foundation Certifications form part of eduacational programs.
+</p>
+
+<section>
+  <table class="table">
+    <thead>
+      <th>Title</th>
+    </thead>
+    <tbody>
+      {% for certification in certifications %}
+        <tr>
+          <td>{{ certification.title }} <a href="{% url 'certification' certification.id %}">{{ certification.title }}</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% endblock content %}
+
+{% block javascript %}
+<script type="text/javascript">
+  $(function() {
+    $('#find_button').click(function(e) {
+        e.preventDefault();
+        $("#search_form").submit();
+    });
+  });
+</script>
+{% endblock javascript %}
