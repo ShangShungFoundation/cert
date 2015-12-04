@@ -18,15 +18,19 @@ class Person(models.Model):
         choices=TREATMENTS, max_length=50)
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
+    
     birth = models.DateField(null=True, blank=True)
 
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     tel = models.CharField(
         null=True, blank=True, max_length=250)
 
     address = models.TextField()
     country = models.CharField(
         choices=COUNTRIES, max_length=50)
+
+    idc_member = models.BooleanField()
+    receives_newsletters = models.BooleanField()
 
     created_by = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True)
