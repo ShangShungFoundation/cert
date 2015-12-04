@@ -23,7 +23,7 @@ class Course(models.Model):
     accreditation = models.ForeignKey(
         Accreditation, blank=True, null=True)
 
-    organizer = models.ForeignKey(Authority, related_name='related_organizers)
+    organizer = models.ForeignKey(Authority, related_name='related_organizers')
     professors = models.ManyToManyField(User)
     manager = models.ForeignKey(User, related_name='related_managers')
 
@@ -46,12 +46,16 @@ class Course(models.Model):
         blank=True, null=True)
 
     budget = models.DecimalField(
+        max_digits=5, decimal_places=2,
         blank=True, null=True)
     honoraries = models.DecimalField(
+        max_digits=5, decimal_places=2,
         blank=True, null=True)
     expences = models.DecimalField(
+        max_digits=5, decimal_places=2,
         blank=True, null=True)
     profit = models.DecimalField(
+        max_digits=5, decimal_places=2,
         blank=True, null=True)
 
     def __unicode__(self):
