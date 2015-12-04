@@ -12,5 +12,5 @@ class Location(models.Model):
         choices=COUNTRIES, max_length=5)
 
     def __unicode__(self):
-        return u"%s - %s - %s" % (self.name, self.place, self.country)
+        return u"%s - %s - %s" % (self.name, self.place, self.get_country_display())
 
