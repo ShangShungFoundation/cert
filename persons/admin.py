@@ -4,19 +4,22 @@ from models import Person
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ("first_name", "last_name")
+    list_display = ("first_name", "last_name", "email", "idc_member")
     search_fields = ('first_name', 'last_name', "email")
 
     fieldsets = (
         (None, {
             'fields': (
-                ("treatment", "first_name", "last_name"),
+                "treatment", 
+                ("first_name", "last_name"),
                 "birth",
+                "idc_member",
             )
         }),
         ('Contact', {
             'fields': (
-                ("email", "tel"),
+                "tel",
+                ("email", "receives_newsletters"),
             )
         }),
         ('Address', {
