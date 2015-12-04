@@ -2,18 +2,21 @@ from django.contrib import admin
 
 from authorities.models import Certifier
 
-from models import Certification, Accreditation, Certificate
+from models import Discipline, Certification
+from models import Accreditation, Certificate
 
 
 class CertificationAdmin(admin.ModelAdmin):
-    list_display = ("type", "name", "authority", )
-    list_filter = ( "type", )
+    list_display = ("name","cert_type", "authority", )
+    list_filter = ( "cert_type", )
 
     fieldsets = (
         (None, {
             'fields': (
                 "name",
                 "authority",
+                "cert_type",
+                "discipline",
                 "requires",
                 "description",
                 "file",
@@ -28,10 +31,22 @@ class CertificationAdmin(admin.ModelAdmin):
         obj.save()
 
 
+class Certificateline(admin.TabularInline):
+    model = Certificate
+    exclude = ['created_by']
+    raw_id_fields = ('person',)
+
+    def save_model(self, request, obj, form, change):
+        #import ipdb; ipdb.set_trace()
+        if getattr(obj, 'created_by', None) is None:
+            obj.created_by_id = request.user.id
+        obj.save()
+
 
 class AccreditationAdmin(admin.ModelAdmin):
     list_display = ("certification", "released_at", "location")
     list_filter = ( "certification", "location")
+    inlines = [Certificateline]
 
     fieldsets = (
         (None, {
@@ -65,6 +80,7 @@ class CertificateAdmin(admin.ModelAdmin):
             'fields': (
                 "person",
                 "accreditation",
+                "observations",
             )
         }),
     )
@@ -75,7 +91,7 @@ class CertificateAdmin(admin.ModelAdmin):
             obj.created_by_id = request.user.id
         obj.save()
 
-
+admin.site.register(Discipline)
 admin.site.register(Certification, CertificationAdmin)
 admin.site.register(Accreditation, AccreditationAdmin)
 admin.site.register(Certificate, CertificateAdmin)
