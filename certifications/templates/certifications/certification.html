@@ -1,1 +1,39 @@
- 
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block header %}
+  <h1>{{ certification }}</h1>
+{% endblock header %}
+
+
+
+
+{% block content %}
+<p>
+	{{ certification.description }}
+</p>
+
+<section>
+	<h3>Accreditations</h3>
+	<ul>
+		{% for accreditation in certification.related_acreditations.all %}
+		<li>{{ accreditation.released_at }} at {{ accreditation.location }}</li>
+		{% endfor %}
+	</ul>
+</section>
+
+
+<section>
+	<h3>Certificate Verification</h3>
+	<section>
+	<form method="get" action="." class="form-horizontal" id="search_form">
+		{% crispy cert_verify_form %}
+		<div class="form-group">
+			<button type="submit" class="btn btn-primary" id="find_button">Find</button>
+		</div>
+
+	</form>
+</section>
+</section>
+{% endblock content %} 
