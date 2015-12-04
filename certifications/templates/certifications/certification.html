@@ -27,8 +27,11 @@
 <section>
 	<h3>Certificate Verification</h3>
 	<section>
-	<form method="get" action="." class="form-horizontal" id="search_form">
-		{% crispy cert_verify_form %}
+	<form method="get" action="{% url "certificates" certification.id %}" class="form-horizontal" id="search_form">
+		<div id="div_id_title" class="form-group">
+			{% crispy cert_verify_form %}
+		</div>
+
 		<div class="form-group">
 			<button type="submit" class="btn btn-primary" id="find_button">Find</button>
 		</div>

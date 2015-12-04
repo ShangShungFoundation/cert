@@ -5,6 +5,8 @@ urlpatterns = patterns('certifications.views',
         "certificate", name="certificate"),
     url(r'^certification/(?P<object_id>\d+)/$',
         "certification", name='certification'),
+    url(r'^certificates/(?P<certification_id>\d+)/$',
+        "certificates", name='certificates'),
     url(r'^$',
         "certifications", name='certifications'),
 )
