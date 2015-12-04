@@ -15,7 +15,7 @@ class Authority(models.Model):
 class Certifier(models.Model):
     """Refers to person which authorize acreditation of certificate"""
 
-    person = models.ForeignKey("persons.Person")
+    person = models.ForeignKey("auth.User")
     role = models.CharField(max_length=250)
     
 
