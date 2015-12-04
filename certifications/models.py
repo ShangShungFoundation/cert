@@ -23,6 +23,7 @@ class Certification(models.Model):
     )
 
     name = models.CharField(max_length=250)
+    title = models.CharField("certificate title", max_length=250)
     cert_type = models.PositiveSmallIntegerField(choices=TYPES)
 
     authority = models.ForeignKey("authorities.Authority")
