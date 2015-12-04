@@ -14,6 +14,7 @@ class CertificationAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 "name",
+                "title",
                 "authority",
                 "cert_type",
                 "discipline",
