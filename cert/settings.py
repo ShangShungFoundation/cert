@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.static',
             ],
         },
     },
@@ -88,7 +89,9 @@ DATABASES = {
     }
 }
 
-
+DATE_INPUT_FORMATS = ('%d-%m-%Y')
+DATE_FORMAT = '%d-%m-%Y'
+SHORT_DATE_FORMAT = '%d-%m-%Y'
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
