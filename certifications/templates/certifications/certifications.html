@@ -3,7 +3,7 @@
 
 
 {% block header %}
-  <h1> SSF Certifications</h1>
+  <h1> SSF Certification Programmes</h1>
 {% endblock header %}
 
 
@@ -22,22 +22,10 @@
     <tbody>
       {% for certification in certifications %}
         <tr>
-          <td>{{ certification.title }} <a href="{% url 'certification' certification.id %}">{{ certification.title }}</a></td>
+          <td> <a href="{% url 'certification' certification.id %}">{{ certification }}</a></td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 </section>
-
 {% endblock content %}
-
-{% block javascript %}
-<script type="text/javascript">
-  $(function() {
-    $('#find_button').click(function(e) {
-        e.preventDefault();
-        $("#search_form").submit();
-    });
-  });
-</script>
-{% endblock javascript %}
