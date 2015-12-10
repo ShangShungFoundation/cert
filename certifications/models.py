@@ -82,4 +82,6 @@ class Certificate(models.Model):
 
     class Meta(object):
         unique_together = ("person", "accreditation")
-            
+
+    def __unicode__(self):
+        return u"%s %s" % (self.person, self.accreditation)      
