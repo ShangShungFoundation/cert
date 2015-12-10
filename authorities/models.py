@@ -1,7 +1,5 @@
 from django.db import models
 
-from certifications.models import Accreditation
-
 
 class Authority(models.Model):
     """Describes institution issuing certification"""
@@ -17,7 +15,6 @@ class Certifier(models.Model):
 
     person = models.ForeignKey("auth.User")
     role = models.CharField(max_length=250)
-    
 
     def __unicode__(self):
         return u"%s %s" % (self.role, self.person)
