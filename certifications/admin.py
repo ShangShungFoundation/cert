@@ -68,10 +68,8 @@ class AccreditationAdmin(admin.ModelAdmin):
         obj.save()
 
 
-
-
 class CertificateAdmin(admin.ModelAdmin):
-    list_display = ("person", "accreditation")
+    #list_display = ("person", "accreditation")
     list_filter = ( "accreditation", )
     search_fields = ('person__second_name', 'person__email', )
     raw_id_fields = ("person", )
