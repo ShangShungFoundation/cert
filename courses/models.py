@@ -17,6 +17,7 @@ class Course(models.Model):
     )
 
     title = models.CharField(max_length=250)
+    requires = models.ForeignKey("Course", blank=True, null=True)
     summary = models.TextField()
     programme = models.TextField()
 
@@ -24,8 +25,8 @@ class Course(models.Model):
         Accreditation, blank=True, null=True)
 
     organizer = models.ForeignKey(Authority, related_name='related_organizers')
-    professors = models.ManyToManyField(User)
     manager = models.ForeignKey(User, related_name='related_managers')
+    professors = models.ManyToManyField(User)
 
     location = models.ForeignKey(Location)
 
@@ -57,6 +58,8 @@ class Course(models.Model):
     profit = models.DecimalField(
         max_digits=5, decimal_places=2,
         blank=True, null=True)
+
+    poster = models.ImageField(upload_to="courses/posters")
 
     def __unicode__(self):
         return u"%s - %s - %s" % (self.title, self.begins, self.status)
@@ -90,8 +93,10 @@ class Participant(models.Model):
         max_digits=5, decimal_places=2,
         blank=True, null=True)
 
-    status = models.PositiveSmallIntegerField(choices=STATUS)
-    certificate = models.ForeignKey(Certificate)
+    status = models.PositiveSmallIntegerField(
+        choices=STATUS, default=1)
+    certificate = models.ForeignKey(
+        Certificate, null=True, blank=True)
 
     observations = models.TextField(
         blank=True, null=True)
