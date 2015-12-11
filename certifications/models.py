@@ -12,7 +12,7 @@ class Discipline(models.Model):
         return u"%s" % self.name
 
         
-class Certification(models.Model):
+class CertificationProgramme(models.Model):
     """Certification refers to the confirmation of certain characteristics
     of an object, person, or organization.
     - https://en.wikipedia.org/wiki/Certification"""
@@ -28,16 +28,21 @@ class Certification(models.Model):
 
     authority = models.ForeignKey("authorities.Authority")
 
-    description = models.TextField(
-        blank=True, null=True)
     discipline = models.ForeignKey(Discipline)
+    summary = models.TextField()
+    achivement = models.TextField()
+    public = models.TextField(
+        help_text="defines public to which certificate is targeted")
     requires = models.ForeignKey(
-        "Certification",
+        "CertificationProgramme",
         blank=True, null=True,
-        help_text=u"""indicates if cerfiticate
-        requires pssesion of another certificate""")
-    file = models.FileField(blank=True, null=True)
+        help_text=u"""indicates if ather certification rograme is necessary""")
+    
+    file = models.FileField(
+        blank=True, null=True,
+        help_text="certificate template")
 
+    
     created_by = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -48,7 +53,7 @@ class Certification(models.Model):
 class Accreditation(models.Model):
     """Accreditation is a specific organization's process of certification."""
 
-    certification = models.ForeignKey(Certification, related_name="related_acreditations")
+    certification = models.ForeignKey(CertificationProgramme, related_name="related_acreditations")
     certifiers = models.ManyToManyField(
         'authorities.Certifier', related_name="related_certifiers")
 

@@ -2,11 +2,11 @@ from django.contrib import admin
 
 from authorities.models import Certifier
 
-from models import Discipline, Certification
+from models import Discipline, CertificationProgramme
 from models import Accreditation, Certificate
 
 
-class CertificationAdmin(admin.ModelAdmin):
+class CertificationProgrammeAdmin(admin.ModelAdmin):
     list_display = ("name","cert_type", "authority", )
     list_filter = ( "cert_type", )
 
@@ -91,6 +91,6 @@ class CertificateAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(Discipline)
-admin.site.register(Certification, CertificationAdmin)
+admin.site.register(CertificationProgramme, CertificationProgrammeAdmin)
 admin.site.register(Accreditation, AccreditationAdmin)
 admin.site.register(Certificate, CertificateAdmin)
