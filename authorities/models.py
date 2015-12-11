@@ -9,6 +9,9 @@ class Authority(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta(object):
+    	verbose_name_plural='Authorities'
+
 
 class Certifier(models.Model):
     """Refers to person which authorize acreditation of certificate"""
@@ -18,3 +21,4 @@ class Certifier(models.Model):
 
     def __unicode__(self):
         return u"%s %s" % (self.role, self.person)
+
