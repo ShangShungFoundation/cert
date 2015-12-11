@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django import forms
 from django.core import validators
 
-from models import Certification, Certificate
+from models import CertificationProgramme, Certificate
 
 
 class CertVerifyForm(forms.Form):
@@ -10,12 +10,12 @@ class CertVerifyForm(forms.Form):
 
 
 def certifications(request):
-    certifications = Certification.objects.all()
+    certifications = CertificationProgramme.objects.all()
     return render(request, "certifications/certifications.html",
         dict(certifications=certifications) )
 
 def certification(request, object_id):
-    certification = Certification.objects.get(pk=object_id)
+    certification = CertificationProgramme.objects.get(pk=object_id)
     cert_verify_form = CertVerifyForm(request.GET)
     return render(request, "certifications/certification.html",
         dict(certification=certification,
