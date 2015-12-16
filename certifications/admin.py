@@ -62,7 +62,6 @@ class AccreditationAdmin(admin.ModelAdmin):
     )
 
     def save_model(self, request, obj, form, change):
-        #import ipdb; ipdb.set_trace()
         if getattr(obj, 'created_by', None) is None:
             obj.created_by_id = request.user.id
         obj.save()
