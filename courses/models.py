@@ -1,5 +1,6 @@
-from django.db import models
+import pycountry
 
+from django.db import models
 from django.contrib.auth.models import User
 
 from locations.models import Location, Zone
@@ -7,6 +8,8 @@ from persons.models import Person
 from certifications.models import CertificationProgramme
 from certifications.models import Accreditation, Certificate
 from authorities.models import Authority
+
+LANGUAGES = [(c.name, c.name) for c in pycountry.languages]
 
 
 class EducationalProgramme(models.Model):
@@ -17,6 +20,7 @@ class EducationalProgramme(models.Model):
     requires = models.ForeignKey("Course", blank=True, null=True)
     public = models.TextField(
         help_text="public to which programme is directed")
+    
     achivement = models.TextField()
     certification = models.ForeignKey(
         CertificationProgramme, blank=True, null=True)
@@ -35,13 +39,32 @@ class EducationalProgramme(models.Model):
         return "%s" % self.title
 
 
-class File(models.Model):
+class Module(models.Model):
+    educational_programme = models.ForeignKey(EducationalProgramme)
+    name = models.CharField(max_length=250)
+    hours = models.PositiveSmallIntegerField(
+        blank=True, null=True)
+    description = models.TextField(
+        blank=True, null=True)
+    observations = models.TextField(
+        blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User)
+    
+    def __unicode__(self):
+        return "%s, %s" % (self.educational_programme, self.name)
+
+
+class ProgrammeResource(models.Model):
     TYPES = (
-        (1, "didactic material"),
-        (2, "publicity"),
-        (3, "administrative"),
+        (1, "didactic material - public"),
+        (2, "didactic material - participants"),
+        (3, "publicity"),
+        (4, "administrative"),
     )
     course = models.ForeignKey(EducationalProgramme)
+    title = models.CharField(max_length=250)
     file = models.FileField()
     type = models.PositiveSmallIntegerField(choices=TYPES)
     observations = models.TextField(
@@ -49,6 +72,9 @@ class File(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return "%s, %s" % (self.course, self.title)
 
 
 class ParticipantGroup(models.Model):
@@ -64,14 +90,22 @@ class Fee(models.Model):
         ("DOL", "Dollars"),
     )
     programme = models.ForeignKey(EducationalProgramme)
-    participant_group = models.ForeignKey(ParticipantGroup)
+
     zone = models.ForeignKey(Zone)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    participant_group = models.ForeignKey(ParticipantGroup)
+
     currency = models.CharField(
         choices=CURRENCIES, max_length=50)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User)
 
     def __unicode__(self):
         return u"%s - %s - %s" % (self.title, self.begins, self.status)
+
+    class Meta(object):
+        unique_together=(("zone", "participant_group"))
 
 
 class Course(models.Model):
@@ -83,12 +117,20 @@ class Course(models.Model):
     )
 
     educational_programme = models.ForeignKey(EducationalProgramme)
+    title = models.CharField(max_length=250,
+        help_text='original title')
     accreditation = models.ForeignKey(
         Accreditation, blank=True, null=True)
 
     organizer = models.ForeignKey(Authority, related_name='related_organizers')
     manager = models.ForeignKey(User, related_name='related_managers')
     professors = models.ManyToManyField(User, related_name='related_professors')
+
+    main_language = models.CharField(
+        choices=LANGUAGES, default="English", max_length=50)
+    second_language = models.CharField(
+        choices=LANGUAGES, max_length=50,
+        blank=True, null=True)
 
     location = models.ForeignKey(Location)
 
@@ -108,16 +150,15 @@ class Course(models.Model):
     observations = models.TextField(
         blank=True, null=True)
 
-    poster = models.ImageField(upload_to="courses/posters")
+    poster = models.ImageField(
+        upload_to="courses/posters",
+        blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User)
 
     def __unicode__(self):
         return u"%s - %s - %s" % (self.title, self.begins, self.status)
-
-
-
 
 
 class Participant(models.Model):
@@ -145,6 +186,12 @@ class Participant(models.Model):
 
     submitted_at = models.DateField(auto_now_add=True)
 
+    def __unicode__(self):
+        return u"%s - %s - %s" % (self.course, self.person)
+
+    class Meta(object):
+        unique_together = (("course", "person"),)
+
 
 class Communication(models.Model):
     TYPES = (
@@ -163,3 +210,6 @@ class Communication(models.Model):
 
     observations = models.TextField(
         blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s - %s - %s" % (self.course, self.sent_at, self.subject)
