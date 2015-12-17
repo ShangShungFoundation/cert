@@ -2,45 +2,102 @@
 
 
 {% block header %}
-  <h1>{{ course.title }}</h1>
-  <p>Organized by: {{ course.organizer }}</p>
-  <p>starts {{ course.begins }} at {{ course.location }}</p>
-  <p>{{ course.programme.summary }}</p>
+	<div class="jumbotron">
+		<h1 class="blog-title">{{ course.title }}</h1>
+		<p>
+			organized by <em>{{ course.organizer }}</em> as part of 
+			<em><a href="{% url 'educational_programme' course.educational_programme.id %}">{{ course.educational_programme }}</a></em>
+		</p>
+
+		<h3>carried by 
+		{% for professor in course.professors.all %}
+		<em>{{ professor.first_name }} {{ professor.last_name }}</em>
+		{% endfor %}
+		</h3>
+		<h2>
+			from <time datetime="{{ course.begins }}">{{ course.begins }}</time> 
+			to <time datetime="{{ course.finish }}">{{ course.finish }}</time>
+		</h2>
+		<h2>at <em>{{ course.location }}</em></h2>
+		
+		<p>
+			language: <em>{{ course.main_language }}</em>
+			{% if course.second_language %}
+			with translation into <em> {{ course.second_language }}</em>
+			{% endif %}
+		</p>
+ 	</div>
+ 	<p>{{ course.educational_programme.summary }}</p>
 {% endblock header %}
 
 
 {% block content %}
-<section>
-	<p>{{ programme.programme }}</p>
-
-	<h3>Public</h3>
-	<p>{{ programme.public }}</p>
+<section class="col-sm-8">
+	<h3>Programme</h3>
+	<p>{{ course.educational_programme.programme }}</p>
 		
-	{% if programme.requires%}
-	<h3>Requirements</h3>
-	<p>Requires: {{ programme.requires }}</p>
-	{% endif %}
+	<h3>Timetable</h3>
+	<p>{{ course.timetable }}</p>
 
-	<h3>Achievement</h3>
-	<p>{{ programme.achivement }}</p>
-	{% if programme.certification%}
-	<p>Certification: {{ programme.certification }}</p>
-	{% endif  %}
+	<h3>Achievements</h3>
+	<p>{{ course.educational_programme.achivement }}</p>
+	{% if course.educational_programme.certification%}
+	<p>Certification: {{ course.educational_programme.certification }}</p>
+	{% endif %}
 </section>
 
-
-<section>
-	{% if programme.related_courses.opened.all %}
-	<h3>Coming Courses</h3>
-
-	{% for course in programme.related_courses.opened.all %}
+<section class="col-sm-4">
 	<div>
-		<a href="{% url 'course' course.id %}">
-			<h4>{{ course.begins }} at {{ course.location }}</h4>
-		</a>
-	</div>
-	{% endfor %}
+	<div class="panel panel-default">
+		<h3 class="panel-heading">Public</h3>
+		<div class="panel-body">
+			<p>{{ course.educational_programme.public }}</p>
 
-	{% endif %}
+			{% if course.educational_programme.requires%}
+			<h3>Requirements</h3>
+			<p>Requires: {{ course.educational_programme.requires }}</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<h3 class="panel-heading">Fees</h3>
+		<div class="panel-body">
+			<table>
+				<tr>
+					<th>Participant Group</th>
+					<th>Price</th>
+				</tr>
+				{% for fee in fees %}
+				<tr>
+					<td>{{ fee.participant_group }}</td>
+					<td>{{ fee.price }} {{ fee.currency }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<h3 class="panel-heading">Registration</h3>
+		<div class="panel-body">
+			{% if course.is_open %}
+			<p>
+				Everybody willing to participate is asked to register and do the payment at 
+				<a href="{{ course.registration_url }}">{{ course.registration_url }}</a>
+			</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<h3 class="panel-heading">Contact</h3>
+		<div class="panel-body">
+			<p>Manager: <em><a href="mailto:{{ course.manager.email }}?subject={{ course.title}}">{{ course.manager.first_name }} {{ course.manager.last_name }}</a></em> 
+			</p>
+		</div>
+	</div>
+	</div>
+
 </section>
 {% endblock content %} 

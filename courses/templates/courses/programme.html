@@ -9,7 +9,7 @@
 
 
 {% block content %}
-<section>
+<section class="col-sm-8">
 	<p>{{ programme.programme }}</p>
 
 	<h3>Public</h3>
@@ -20,6 +20,16 @@
 	<p>Requires: {{ programme.requires }}</p>
 	{% endif %}
 
+	<h3>Modules</h3>
+	<ul class="list-group">
+		{% for module in course.related_modules.all %}
+		<li class="list-group-item">
+			<span class="badge">{{ module.hours }}</span>
+			{{ module.name }}
+		</li>
+		{% endfor %}
+	</ul>
+
 	<h3>Achievement</h3>
 	<p>{{ programme.achivement }}</p>
 	{% if programme.certification%}
@@ -28,18 +38,16 @@
 </section>
 
 
-<section>
+<section class="col-sm-4">
 	{% if programme.related_courses.opened.all %}
 	<h3>Coming Courses</h3>
-
-	{% for course in programme.related_courses.opened.all %}
-	<div>
+	<div class="list-group">
+		{% for course in programme.related_courses.opened.all %}
 		<a href="{% url 'course' course.id %}">
 			<h4>{{ course.begins }} at {{ course.location }}</h4>
 		</a>
+		{% endfor %}
 	</div>
-	{% endfor %}
-
 	{% endif %}
 </section>
 {% endblock content %} 
