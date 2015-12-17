@@ -1,3 +1,4 @@
+import datetime 
 import pycountry
 
 from django.db import models
@@ -14,18 +15,20 @@ LANGUAGES = [(c.name, c.name) for c in pycountry.languages]
 
 class ActiveProgrammeManager(models.Manager):
     def get_queryset(self):
-        return super(ActiveProgrammeManager, self).get_queryset().filter(is_active=True)
+        return super(
+            ActiveProgrammeManager, self).get_queryset().filter(is_active=True)
 
 
 class EducationalProgramme(models.Model):
-    institution = models.ForeignKey(Authority, related_name='related_edu_programmes')
+    institution = models.ForeignKey(
+        Authority, related_name='related_edu_programmes')
     title = models.CharField(max_length=250)
     is_active = models.BooleanField()
 
     requires = models.ForeignKey("Course", blank=True, null=True)
     public = models.TextField(
         help_text="public to which programme is directed")
-    
+
     achivement = models.TextField()
     certification = models.ForeignKey(
         CertificationProgramme, blank=True, null=True)
@@ -47,7 +50,8 @@ class EducationalProgramme(models.Model):
 
 
 class Module(models.Model):
-    educational_programme = models.ForeignKey(EducationalProgramme)
+    educational_programme = models.ForeignKey(
+        EducationalProgramme, related_name='related_modules')
     name = models.CharField(max_length=250)
     hours = models.PositiveSmallIntegerField(
         blank=True, null=True)
@@ -58,7 +62,7 @@ class Module(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User)
-    
+
     def __unicode__(self):
         return "%s, %s" % (self.educational_programme, self.name)
 
@@ -105,15 +109,16 @@ class Fee(models.Model):
     currency = models.CharField(
         choices=CURRENCIES, max_length=50)
     price = models.DecimalField(max_digits=5, decimal_places=2)
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User)
 
     def __unicode__(self):
-        return u"%s - %s - %s" % (self.programme, self.zone, self.participant_group)
+        return u"%s - %s - %s" % (
+            self.programme, self.zone, self.participant_group)
 
     class Meta(object):
-        unique_together=(("zone", "participant_group"))
+        unique_together = (("zone", "participant_group"))
 
 
 class CourseQuerySet(models.QuerySet):
@@ -145,14 +150,15 @@ class Course(models.Model):
 
     educational_programme = models.ForeignKey(
         EducationalProgramme, related_name='related_courses')
-    title = models.CharField(max_length=250,
-        help_text='original title')
+    title = models.CharField(
+        max_length=250, help_text='original title')
     accreditation = models.ForeignKey(
         Accreditation, blank=True, null=True)
 
     organizer = models.ForeignKey(Authority, related_name='related_organizers')
     manager = models.ForeignKey(User, related_name='related_managers')
-    professors = models.ManyToManyField(User, related_name='related_professors')
+    professors = models.ManyToManyField(
+        User, related_name='related_professors')
 
     main_language = models.CharField(
         choices=LANGUAGES, default="English", max_length=50)
@@ -167,9 +173,9 @@ class Course(models.Model):
     timetable = models.TextField()
 
     min_nbr_participants = models.PositiveSmallIntegerField(
-        blank=True, null=True) 
+        blank=True, null=True)
     max_nbr_participants = models.PositiveSmallIntegerField(
-        blank=True, null=True) 
+        blank=True, null=True)
     recrutation_starts = models.DateField(
         blank=True, null=True)
 
@@ -185,7 +191,21 @@ class Course(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User)
 
+    registration_url = models.URLField(
+        blank=True, null=True)
+
     objects = CourseManager()
+
+    def is_open(self):
+        now = datetime.date.today()
+        if self.begins < now:
+            return False
+        if self.status == 2 and not self.recrutation_starts:
+            return True
+        if self.status == 2 and self.recrutation_starts < now:
+            return True
+        else:
+            return False
 
     def __unicode__(self):
         return u"%s - %s - %s" % (self.title, self.begins, self.status)
