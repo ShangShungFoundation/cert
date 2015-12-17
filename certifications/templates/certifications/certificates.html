@@ -1,0 +1,24 @@
+ 
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block header %}
+  <h1>Certificates</h1>
+{% endblock header %}
+
+
+{% block content %}
+<section>
+	{% if certs %}
+	<p>We have found following Certificates coresponding to your query:</p>
+	{% for cert in certs %}
+	<div class="cert" slyle="text-align: center">
+	{% include "certifications/_cert.html" %}
+	</div>
+	{% endfor %}
+	{% else %}
+	<p>Sorry. There are no certificates found for "{{ search_str }}"</p>
+	{% endif %}
+</section>
+{% endblock content %} 

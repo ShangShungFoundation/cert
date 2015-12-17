@@ -1,12 +1,14 @@
 from django.conf.urls import patterns, url
+import certifications.views
 
-urlpatterns = patterns('certifications.views',
+
+urlpatterns = [
     url(r'^certificate/(?P<object_id>\d+)/$',
-        "certificate", name="certificate"),
+        certifications.views.certificate, name="certificate"),
     url(r'^certification/(?P<object_id>\d+)/$',
-        "certification", name='certification'),
+        certifications.views.certification, name='certification'),
     url(r'^certificates/(?P<certification_id>\d+)/$',
-        "certificates", name='certificates'),
+        certifications.views.certificates, name='certificates'),
     url(r'^$',
-        "certifications", name='certifications'),
-)
+        certifications.views.certifications, name='certifications'),
+]

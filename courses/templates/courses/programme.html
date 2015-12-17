@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+  <h1>{{ programme.title }}</h1>
+  <h3>Institution: {{ programme.institution }}</h3>
+  <p>{{ programme.summary }}</p>
+{% endblock header %}
+
+
+{% block content %}
+<section>
+	<p>{{ programme.programme }}</p>
+
+	<h3>Public</h3>
+	<p>{{ programme.public }}</p>
+		
+	{% if programme.requires%}
+	<h3>Requirements</h3>
+	<p>Requires: {{ programme.requires }}</p>
+	{% endif %}
+
+	<h3>Achievement</h3>
+	<p>{{ programme.achivement }}</p>
+	{% if programme.certification%}
+	<p>Certification: {{ programme.certification }}</p>
+	{% endif  %}
+</section>
+
+
+<section>
+	{% if programme.related_courses.opened.all %}
+	<h3>Coming Courses</h3>
+
+	{% for course in programme.related_courses.opened.all %}
+	<div>
+		<a href="{% url 'course' course.id %}">
+			<h4>{{ course.begins }} at {{ course.location }}</h4>
+		</a>
+	</div>
+	{% endfor %}
+
+	{% endif %}
+</section>
+{% endblock content %} 
