@@ -9,23 +9,23 @@
 			<em><a href="{% url 'educational_programme' course.educational_programme.id %}">{{ course.educational_programme }}</a></em>
 		</p>
 
-		<h3>carried by 
+		<h2>carried by 
 		{% for professor in course.professors.all %}
 		<em>{{ professor.first_name }} {{ professor.last_name }}</em>
 		{% endfor %}
-		</h3>
-		<h2>
+		</h2>
+		<h3>at <em>{{ course.location }}</em></h2>
+		<h3>
 			from <time datetime="{{ course.begins }}">{{ course.begins }}</time> 
 			to <time datetime="{{ course.finish }}">{{ course.finish }}</time>
-		</h2>
-		<h2>at <em>{{ course.location }}</em></h2>
-		
+		</h3>
 		<p>
-			language: <em>{{ course.main_language }}</em>
+			Course language: <em>{{ course.main_language }}</em>
 			{% if course.second_language %}
 			with translation into <em> {{ course.second_language }}</em>
 			{% endif %}
 		</p>
+		<p><a class="btn btn-primary btn-lg right" href="{{ course.registration_url }}" role="button">Register NOW</a></p>
  	</div>
  	<p>{{ course.educational_programme.summary }}</p>
 {% endblock header %}
@@ -49,7 +49,7 @@
 <section class="col-sm-4">
 	<div>
 	<div class="panel panel-default">
-		<h3 class="panel-heading">Public</h3>
+		<div class="panel-heading">Public</div>
 		<div class="panel-body">
 			<p>{{ course.educational_programme.public }}</p>
 
@@ -61,7 +61,7 @@
 	</div>
 
 	<div class="panel panel-default">
-		<h3 class="panel-heading">Fees</h3>
+		<div class="panel-heading">Fees</div>
 		<div class="panel-body">
 			<table>
 				<tr>
@@ -79,7 +79,7 @@
 	</div>
 
 	<div class="panel panel-default">
-		<h3 class="panel-heading">Registration</h3>
+		<div class="panel-heading">Registration</div>
 		<div class="panel-body">
 			{% if course.is_open %}
 			<p>
@@ -91,7 +91,7 @@
 	</div>
 
 	<div class="panel panel-default">
-		<h3 class="panel-heading">Contact</h3>
+		<div class="panel-heading">Contact</div>
 		<div class="panel-body">
 			<p>Manager: <em><a href="mailto:{{ course.manager.email }}?subject={{ course.title}}">{{ course.manager.first_name }} {{ course.manager.last_name }}</a></em> 
 			</p>
