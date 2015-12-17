@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+  <h1>Educational Programmes</h1>
+{% endblock header %}
+
+
+{% block content %}
+<section>
+	{% for programme in programmes %}
+	<a href="{% url 'educational_programme' programme.id %}">
+		<div class="cert" slyle="text-align: center">
+			<h2>{{ programme.title }}</h2>
+			<h3>Institution: {{ programme.institution }}</h3>
+			<p>{{ programme.summary }}</p>
+	</div>
+	</a>
+	{% endfor %}
+</section>
+{% endblock content %} 
