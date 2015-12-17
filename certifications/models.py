@@ -11,7 +11,7 @@ class Discipline(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
-        
+
 class CertificationProgramme(models.Model):
     """Certification refers to the confirmation of certain characteristics
     of an object, person, or organization.
@@ -37,12 +37,11 @@ class CertificationProgramme(models.Model):
         "CertificationProgramme",
         blank=True, null=True,
         help_text=u"""indicates if ather certification rograme is necessary""")
-    
+
     file = models.FileField(
         blank=True, null=True,
         help_text="certificate template")
 
-    
     created_by = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -53,7 +52,8 @@ class CertificationProgramme(models.Model):
 class Accreditation(models.Model):
     """Accreditation is a specific organization's process of certification."""
 
-    certification = models.ForeignKey(CertificationProgramme, related_name="related_acreditations")
+    certification = models.ForeignKey(
+        CertificationProgramme, related_name="related_acreditations")
     certifiers = models.ManyToManyField(
         'authorities.Certifier', related_name="related_certifiers")
 
@@ -89,4 +89,5 @@ class Certificate(models.Model):
         unique_together = ("person", "accreditation")
 
     def __unicode__(self):
-        return u"%s %s" % (self.person, self.accreditation)      
+        return u"%s %s" % (self.person, self.accreditation)
+

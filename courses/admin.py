@@ -40,7 +40,6 @@ class ModuleInline(admin.StackedInline):
     extra = 1
 
     def save_model(self, request, obj, form, change):
-        #import ipdb; ipdb.set_trace()
         if getattr(obj, 'created_by', None) is None:
             obj.created_by_id = request.user.id
         obj.save()
@@ -148,6 +147,7 @@ class CourseAdmin(_CreatedAdmin):
             'fields': (
                 ("min_nbr_participants", "max_nbr_participants"),
                 "recrutation_starts",
+                "inscription_url"
             )
         }),
         ("status", {
