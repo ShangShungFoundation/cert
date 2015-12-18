@@ -18,7 +18,7 @@ class Person(models.Model):
         choices=TREATMENTS, max_length=50)
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
-    
+
     birth = models.DateField(null=True, blank=True)
 
     email = models.EmailField(unique=True)
@@ -37,5 +37,3 @@ class Person(models.Model):
 
     def __unicode__(self):
         return u"%s %s %s" % (self.treatment, self.first_name, self.last_name)
-
-

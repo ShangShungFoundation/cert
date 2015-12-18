@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+	<div class="jumbotron">
+		<h1 class="blog-title">{{ course.title }}</h1>
+		<p>
+			organized by <em>{{ course.organizer }}</em> as part of 
+			<em><a href="{% url 'educational_programme' course.educational_programme.id %}">{{ course.educational_programme }}</a></em>
+		</p>
+
+		<h2>carried by 
+		{% for professor in course.professors.all %}
+		<em>{{ professor.first_name }} {{ professor.last_name }}</em>
+		{% endfor %}
+		</h2>
+		<h3>at <em>{{ course.location }}</em></h2>
+		<h3>
+			from <time datetime="{{ course.begins }}">{{ course.begins }}</time> 
+			to <time datetime="{{ course.finish }}">{{ course.finish }}</time>
+		</h3>
+		<p>
+			Course language: <em>{{ course.main_language }}</em>
+			{% if course.second_language %}
+			with translation into <em> {{ course.second_language }}</em>
+			{% endif %}
+		</p>
+		<p><a class="btn btn-primary btn-lg right" href="{{ course.registration_url }}" role="button">Register NOW</a></p>
+ 	</div>
+ 	<p>{{ course.educational_programme.summary }}</p>
+{% endblock header %}
+
+
+{% block content %}
+<section class="col-sm-8">
+	<h3>Programme</h3>
+	<p>{{ course.educational_programme.programme }}</p>
+		
+	<h3>Timetable</h3>
+	<p>{{ course.timetable }}</p>
+
+	<h3>Achievements</h3>
+	<p>{{ course.educational_programme.achivement }}</p>
+	{% if course.educational_programme.certification%}
+	<p>Certification: {{ course.educational_programme.certification }}</p>
+	{% endif %}
+</section>
+
+<section class="col-sm-4">
+	<div>
+	<div class="panel panel-default">
+		<div class="panel-heading">Public</div>
+		<div class="panel-body">
+			<p>{{ course.educational_programme.public }}</p>
+
+			{% if course.educational_programme.requires%}
+			<h3>Requirements</h3>
+			<p>Requires: {{ course.educational_programme.requires }}</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Fees</div>
+		<div class="panel-body">
+			<table>
+				<tr>
+					<th>Participant Group</th>
+					<th>Price</th>
+				</tr>
+				{% for fee in fees %}
+				<tr>
+					<td>{{ fee.participant_group }}</td>
+					<td>{{ fee.price }} {{ fee.currency }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Registration</div>
+		<div class="panel-body">
+			{% if course.is_open %}
+			<p>
+				Everybody willing to participate is asked to register and do the payment at 
+				<a href="{{ course.registration_url }}">{{ course.registration_url }}</a>
+			</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Contact</div>
+		<div class="panel-body">
+			<p>Manager: <em><a href="mailto:{{ course.manager.email }}?subject={{ course.title}}">{{ course.manager.first_name }} {{ course.manager.last_name }}</a></em> 
+			</p>
+		</div>
+	</div>
+	</div>
+
+</section>
+{% endblock content %} 

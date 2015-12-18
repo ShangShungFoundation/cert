@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
     dependencies = [
         ('locations', '__first__'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('certifications', '0001_initial'),
-        ('authorities', '0001_initial'),
+        #('certifications', '0001_initial'),
+        #('authorities', '0001_initial'),
         ('persons', '__first__'),
     ]
 

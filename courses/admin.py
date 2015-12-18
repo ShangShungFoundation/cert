@@ -10,7 +10,7 @@ class _CreatedAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'created_by', None) is None:
             obj.created_by_id = request.user.id
-        obj.save()	
+        obj.save()
 
 
 class FeeInline(admin.TabularInline):
@@ -18,7 +18,6 @@ class FeeInline(admin.TabularInline):
     exclude = ['created_by']
 
     def save_model(self, request, obj, form, change):
-        #import ipdb; ipdb.set_trace()
         if getattr(obj, 'created_by', None) is None:
             obj.created_by_id = request.user.id
         obj.save()
@@ -27,10 +26,9 @@ class FeeInline(admin.TabularInline):
 class ProgrammeResourceInline(admin.StackedInline):
     model = ProgrammeResource
     exclude = ['created_by']
-    extra=1
+    extra = 1
 
     def save_model(self, request, obj, form, change):
-        #import ipdb; ipdb.set_trace()
         if getattr(obj, 'created_by', None) is None:
             obj.created_by_id = request.user.id
         obj.save()
@@ -39,10 +37,9 @@ class ProgrammeResourceInline(admin.StackedInline):
 class ModuleInline(admin.StackedInline):
     model = Module
     exclude = ['created_by']
-    extra=1
+    extra = 1
 
     def save_model(self, request, obj, form, change):
-        #import ipdb; ipdb.set_trace()
         if getattr(obj, 'created_by', None) is None:
             obj.created_by_id = request.user.id
         obj.save()
@@ -50,7 +47,7 @@ class ModuleInline(admin.StackedInline):
 
 class EducationalProgrammeAdmin(_CreatedAdmin):
     list_display = ("title", "institution", "is_active")
-    list_filter = ( "is_active", "institution")
+    list_filter = ("is_active", "institution")
     inlines = [ModuleInline, FeeInline, ProgrammeResourceInline]
 
     fieldsets = (
@@ -84,12 +81,12 @@ class EducationalProgrammeAdmin(_CreatedAdmin):
 
 class ParticipantAdmin(admin.ModelAdmin):
     list_display = ("person", "course", "payed", "status")
-    list_filter = ( "status", "course__title")
+    list_filter = ("status", "course__title")
     raw_id_fields = ("person", "certificate")
     fieldsets = (
         (None, {
             'fields': (
-            	"course",
+                "course",
                 ("person", "payed"),
                 ("status", "certificate"),
                 "observations",
@@ -150,21 +147,22 @@ class CourseAdmin(_CreatedAdmin):
             'fields': (
                 ("min_nbr_participants", "max_nbr_participants"),
                 "recrutation_starts",
+                "inscription_url"
             )
         }),
         ("status", {
             'fields': (
-            	"status",
+                "status",
                 "observations",
             )
         }),
     )
 
+
 class FeeAdmin(_CreatedAdmin):
     list_display = ("programme", "participant_group", "zone")
 
     def save_model(self, request, obj, form, change):
-        #import ipdb; ipdb.set_trace()
         if getattr(obj, 'created_by', None) is None:
             obj.created_by_id = request.user.id
         obj.save()
@@ -172,7 +170,7 @@ class FeeAdmin(_CreatedAdmin):
 
 class ProgrammeResourceAdmin(_CreatedAdmin):
     list_display = ("course", "file", "type")
-    list_filter =  ("type", )
+    list_filter = ("type", )
     list_search = ("educational_programme__title", "title")
 
 
@@ -180,7 +178,6 @@ class CommunicationAdmin(admin.ModelAdmin):
     list_display = ("course", "subject", "sent_at")
 
     def save_model(self, request, obj, form, change):
-        #import ipdb; ipdb.set_trace()
         if getattr(obj, 'sent_by', None) is None:
             obj.sent_by = request.user.id
         obj.save()
