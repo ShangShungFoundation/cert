@@ -29,7 +29,10 @@ class CertificationProgramme(models.Model):
     authority = models.ForeignKey("authorities.Authority")
 
     discipline = models.ForeignKey(Discipline)
+    
     summary = models.TextField()
+    description = models.TextField()
+    
     achivement = models.TextField()
     public = models.TextField(
         help_text="defines public to which certificate is targeted")
