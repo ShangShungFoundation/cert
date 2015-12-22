@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('authorities', '0002_auto_20151222_1106'),
+        ('authorities', '0001_initial'),
         ('locations', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('certifications', '0001_initial'),
