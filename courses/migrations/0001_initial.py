@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         ('locations', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('certifications', '0001_initial'),
-        ('persons', '0001_initial'),
+        #('students', '0001_initial'),
     ]
 
     operations = [
@@ -107,7 +107,7 @@ class Migration(migrations.Migration):
                 ('submitted_at', models.DateField(auto_now_add=True)),
                 ('certificate', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='certifications.Certificate')),
                 ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.Course')),
-                ('person', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='persons.Person')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='students.Person')),
             ],
         ),
         migrations.CreateModel(
@@ -182,7 +182,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='participant',
-            unique_together=set([('course', 'person')]),
+            unique_together=set([('course', 'student')]),
         ),
         migrations.AlterUniqueTogether(
             name='fee',

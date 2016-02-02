@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from locations.models import Location, Zone
-from persons.models import Person
+from students.models import Student
 from certifications.models import CertificationProgramme
 from certifications.models import Accreditation, Certificate
 from authorities.models import Authority
@@ -219,7 +219,7 @@ class Participant(models.Model):
         (4, "aworded"),
     )
 
-    person = models.ForeignKey(Person)
+    person = models.ForeignKey(Student)
     course = models.ForeignKey(Course)
 
     payed = models.DecimalField(
