@@ -33,7 +33,7 @@ class CertificationProgrammeAdmin(admin.ModelAdmin):
                 "prerequisities",
             )
         }),
-        ("requirements", {
+        ("description", {
             'fields': (
                 "summary",
                 "description",
