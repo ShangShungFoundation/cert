@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django import forms
 
 from models import EducationalProgramme, Module
 from models import ParticipantGroup, Participant
@@ -46,6 +46,7 @@ class ModuleInline(admin.StackedInline):
 
 
 class EducationalProgrammeAdmin(_CreatedAdmin):
+
     list_display = ("title", "institution", "is_active")
     list_filter = ("is_active", "institution")
     inlines = [ModuleInline, FeeInline, ProgrammeResourceInline]
@@ -56,6 +57,7 @@ class EducationalProgrammeAdmin(_CreatedAdmin):
                 "title",
                 "institution",
                 "is_active",
+                "instructors",
             )
         }),
         ("description", {
@@ -64,16 +66,17 @@ class EducationalProgrammeAdmin(_CreatedAdmin):
                 "programme",
             )
         }),
+        ("objective", {
+            'fields': (
+                "objective",
+                "achivement",
+                "certification",
+            )
+        }),
         ("requirements", {
             'fields': (
                 "requires",
                 "public",
-            )
-        }),
-        ("achivement", {
-            'fields': (
-                "achivement",
-                "certification",
             )
         }),
     )
@@ -184,7 +187,7 @@ class CommunicationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(EducationalProgramme, EducationalProgrammeAdmin)
-admin.site.register(Module)
+#admin.site.register(Module)
 admin.site.register(ParticipantGroup)
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(Course, CourseAdmin)

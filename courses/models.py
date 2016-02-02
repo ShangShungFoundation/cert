@@ -25,19 +25,24 @@ class EducationalProgramme(models.Model):
     title = models.CharField(max_length=250)
     is_active = models.BooleanField()
 
+    instructors = models.ManyToManyField(
+        User, limit_choices_to={'groups': 7},
+        help_text = "only persons from instructorsa group are available")  # group 7 instructors
+
     requires = models.ForeignKey("Course", blank=True, null=True)
     public = models.TextField(
         help_text="public to which programme is directed")
 
-    achivement = models.TextField()
-    certification = models.ForeignKey(
-        CertificationProgramme, blank=True, null=True)
-
     summary = models.TextField()
     programme = models.TextField()
 
+    objective = models.TextField()
+    achivement = models.TextField("knowledge acquired")
+    certification = models.ForeignKey(
+        CertificationProgramme, blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User)
+    created_by = models.ForeignKey(User, related_name="related_edu_programmes")
 
     # honoraries = models.DecimalField(
     #     max_digits=5, decimal_places=2,
@@ -52,7 +57,7 @@ class EducationalProgramme(models.Model):
 class Module(models.Model):
     educational_programme = models.ForeignKey(
         EducationalProgramme, related_name='related_modules')
-    name = models.CharField(max_length=250)
+    #name = models.CharField(max_length=250)
     hours = models.PositiveSmallIntegerField(
         blank=True, null=True)
     description = models.TextField(
@@ -65,6 +70,10 @@ class Module(models.Model):
 
     def __unicode__(self):
         return "%s, %s" % (self.educational_programme, self.name)
+
+    class Meta():
+        verbose_name = "Didactic Module"
+        verbose_name_plural = "Didactic Modules"
 
 
 class ProgrammeResource(models.Model):
@@ -156,9 +165,15 @@ class Course(models.Model):
         Accreditation, blank=True, null=True)
 
     organizer = models.ForeignKey(Authority, related_name='related_organizers')
-    manager = models.ForeignKey(User, related_name='related_managers')
+    manager = models.ForeignKey(
+        User, related_name='related_managers', verbose_name="coordinator",
+        limit_choices_to={'groups': 8},
+        help_text = "only persons from 'Course Coordinators' group are available")  
+
     professors = models.ManyToManyField(
-        User, related_name='related_professors')
+        User, related_name='related_professors', verbose_name="instructors",
+        limit_choices_to={'groups': 7},
+        help_text = "only persons from 'Instructors' group are available.")  
 
     main_language = models.CharField(
         choices=LANGUAGES, default="English", max_length=50)
@@ -191,7 +206,7 @@ class Course(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User)
 
-    registration_url = models.URLField(
+    inscription_url = models.URLField(
         blank=True, null=True)
 
     objects = CourseManager()
@@ -219,7 +234,7 @@ class Participant(models.Model):
         (4, "aworded"),
     )
 
-    person = models.ForeignKey(Student)
+    person = models.ForeignKey(Student, verbose_name="student")
     course = models.ForeignKey(Course)
 
     payed = models.DecimalField(
