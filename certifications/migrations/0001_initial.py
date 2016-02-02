@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         ('locations', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('authorities', '0001_initial'),
-        ('persons', '0001_initial'),
+        #('students', '0001_initial'),
     ]
 
     operations = [
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('accreditation', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certifications.Accreditation')),
                 ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('person', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='persons.Person')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='students.Person')),
             ],
         ),
         migrations.CreateModel(
@@ -98,6 +98,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='certificate',
-            unique_together=set([('person', 'accreditation')]),
+            unique_together=set([('student', 'accreditation')]),
         ),
     ]

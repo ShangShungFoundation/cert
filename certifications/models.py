@@ -2,11 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from locations.models import Location
-from persons.models import Person
+from students.models import Student
 
 
 class Discipline(models.Model):
     name = models.CharField(max_length=250)
+    linage = models.CharField(
+        blank=True, null=True,
+        max_length=250)
+    history = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
         return u"%s" % self.name
@@ -18,34 +22,40 @@ class CertificationProgramme(models.Model):
     - https://en.wikipedia.org/wiki/Certification"""
 
     TYPES = (
-        (1, "Achievement"),
-        (2, "Aword"),
+        (1, "Attendance"),
+        (2, "Diploma"),
     )
 
     name = models.CharField(max_length=250)
     title = models.CharField("certificate title", max_length=250)
     cert_type = models.PositiveSmallIntegerField(choices=TYPES)
 
-    authority = models.ForeignKey("authorities.Authority")
+    authority = models.ForeignKey("authorities.Authority", verbose_name='released by')
 
     discipline = models.ForeignKey(Discipline)
     
+    expiery = models.PositiveSmallIntegerField(
+        blank=True, null=True,
+        help_text='in years')
+
     summary = models.TextField()
     description = models.TextField()
     
-    achivement = models.TextField()
+    prerequisities = models.TextField(blank=True, null=True)
+    achivement = models.TextField("habilitations & Competences")
+
     public = models.TextField(
         help_text="defines public to which certificate is targeted")
     requires = models.ForeignKey(
         "CertificationProgramme",
         blank=True, null=True,
-        help_text=u"""indicates if ather certification rograme is necessary""")
+        help_text=u"""indicates if other certification programe is necessary""")
 
-    file = models.FileField(
-        blank=True, null=True,
-        help_text="certificate template")
+    cert_template = models.FileField(blank=True, null=True,)
 
-    created_by = models.ForeignKey(User)
+    certifiers = models.ManyToManyField(User)
+
+    created_by = models.ForeignKey(User, related_name='cert_creator')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
@@ -76,9 +86,9 @@ class Accreditation(models.Model):
 
 
 class Certificate(models.Model):
-    """Certification applied to the particular person"""
+    """Certification applied to the particular student"""
 
-    person = models.ForeignKey(Person)
+    student = models.ForeignKey(Student)
     accreditation = models.ForeignKey(Accreditation)
 
     observations = models.TextField(blank=True, null=True)
@@ -89,8 +99,8 @@ class Certificate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta(object):
-        unique_together = ("person", "accreditation")
+        unique_together = ("student", "accreditation")
 
     def __unicode__(self):
-        return u"%s %s" % (self.person, self.accreditation)
+        return u"%s %s" % (self.student, self.accreditation)
 

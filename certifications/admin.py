@@ -15,12 +15,29 @@ class CertificationProgrammeAdmin(admin.ModelAdmin):
             'fields': (
                 "name",
                 "title",
-                "authority",
                 "cert_type",
+                "expiery",
                 "discipline",
+                "cert_template",
+            )
+        }),
+        ("Authority", {
+            'fields': (
+                "authority",
+                "certifiers",
+            )
+        }),
+        ("requirements", {
+            'fields': (
                 "requires",
+                "prerequisities",
+            )
+        }),
+        ("requirements", {
+            'fields': (
+                "summary",
                 "description",
-                "file",
+                "achivement",
             )
         }),
     )
@@ -32,10 +49,10 @@ class CertificationProgrammeAdmin(admin.ModelAdmin):
         obj.save()
 
 
-class Certificateline(admin.TabularInline):
+class CertificateInline(admin.TabularInline):
     model = Certificate
     exclude = ['created_by']
-    raw_id_fields = ('person',)
+    raw_id_fields = ('student',)
 
     def save_model(self, request, obj, form, change):
         #import ipdb; ipdb.set_trace()
@@ -47,7 +64,7 @@ class Certificateline(admin.TabularInline):
 class AccreditationAdmin(admin.ModelAdmin):
     list_display = ("certification", "released_at", "location")
     list_filter = ( "certification", "location")
-    inlines = [Certificateline]
+    inlines = [CertificateInline]
 
     fieldsets = (
         (None, {
@@ -70,13 +87,13 @@ class AccreditationAdmin(admin.ModelAdmin):
 class CertificateAdmin(admin.ModelAdmin):
     #list_display = ("person", "accreditation")
     list_filter = ( "accreditation", )
-    search_fields = ('person__second_name', 'person__email', )
-    raw_id_fields = ("person", )
+    search_fields = ('student__second_name', 'student__email', )
+    raw_id_fields = ("student", )
 
     fieldsets = (
         (None, {
             'fields': (
-                "person",
+                "student",
                 "accreditation",
                 "observations",
             )
