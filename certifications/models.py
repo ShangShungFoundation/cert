@@ -53,7 +53,9 @@ class CertificationProgramme(models.Model):
 
     cert_template = models.FileField(blank=True, null=True,)
 
-    certifiers = models.ManyToManyField(User)
+    certifiers = models.ManyToManyField(
+        User, limit_choices_to={'groups': 7},
+        help_text = "only persons from 'instructors' group are available")  
 
     created_by = models.ForeignKey(User, related_name='cert_creator')
     created_at = models.DateTimeField(auto_now_add=True)
