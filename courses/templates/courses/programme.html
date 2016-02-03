@@ -3,50 +3,69 @@
 
 {% block header %}
   <h1>{{ programme.title }}</h1>
-  <h3>Institution: {{ programme.institution }}</h3>
   <p>{{ programme.summary }}</p>
 {% endblock header %}
 
 
 {% block content %}
 <section class="col-sm-8">
-	<p>{{ programme.programme }}</p>
+	{{ programme.programme|linebreaks }}
+	
+	<h3>Objective</h3>
+	{{ programme.objective|linebreaks }}
 
-	<h3>Public</h3>
-	<p>{{ programme.public }}</p>
-		
 	{% if programme.requires%}
 	<h3>Requirements</h3>
 	<p>Requires: {{ programme.requires }}</p>
 	{% endif %}
+
+	<h3>Achievement</h3>
+	<p>{{ programme.achivement }}</p>
+	{% if programme.certification%}
+	<p>Certification: <a href="{% url 'certification' programme.certification_id %}">{{ programme.certification }}</a></p>
+	{% endif  %}
 
 	<h3>Modules</h3>
 	<ul class="list-group">
 		{% for module in course.related_modules.all %}
 		<li class="list-group-item">
 			<span class="badge">{{ module.hours }}</span>
-			{{ module.name }}
+			{{ module.description|linebreaks }}
 		</li>
 		{% endfor %}
 	</ul>
 
-	<h3>Achievement</h3>
-	<p>{{ programme.achivement }}</p>
-	{% if programme.certification%}
-	<p>Certification: {{ programme.certification }}</p>
-	{% endif  %}
+	<h3>Cerified Instructors</h3>
+	<ul class="list-group">
+		{% for instructor in programme.instructors.all %}
+		<li class="list-group-item">
+			{{ instructor.first_name }} {{ instructor.last_name }}
+		</li>
+		{% endfor %}
+	</ul>
 </section>
 
 
 <section class="col-sm-4">
+	<ul class="list-group">
+		<li class="list-group-item">Institution: {{ programme.institution }} </li>
+		<li class="list-group-item">Discipline: {{ programme.discipline }} </li>
+		<li class="list-group-item">Public: {{ programme.public }}</li>
+	</ul>
+
+
 	{% if programme.related_courses.opened.all %}
-	<h3>Coming Courses</h3>
-	<div class="list-group">
-		{% for course in programme.related_courses.opened.all %}
-		<a href="{% url 'course' course.id %}">
-			<h4>{{ course.begins }} at {{ course.location }}</h4>
-		</a>
-		{% endfor %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3class="panel-title" >Coming Courses</h3>
+		</div>
+		<div class="list-group">
+			{% for course in programme.related_courses.opened.all %}
+			<a href="{% url 'course' course.id %}" class="list-group-item">
+				<h4>{{ course.begins }} at {{ course.location }}</h4>
+			</a>
+			{% endfor %}
+		</div>
 	</div>
 	{% endif %}
 </section>

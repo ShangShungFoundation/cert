@@ -15,8 +15,9 @@
 
 
 	<h3>Prerequisities</h3>
+	{% if certification.prerequisities %}
 	{{ certification.prerequisities|linebreaks }}
-
+	{% endif %}
 
 	<h3>Habilitations & Competences</h3>
 	{{ achivement.achivement|linebreaks }}
@@ -41,6 +42,12 @@
 	<ul class="list-group">
 		<li class="list-group-item">authority: <strong>{{ certification.authority }}</strong> </li>
 		<li class="list-group-item" >discipline: <strong>{{ certification.discipline }}</strong> </li>
+		<li class="list-group-item" >Related Eduactional Programme: {% with educationalprogramme=certification.educationalprogramme_set.all.0 %}
+			{% if educationalprogramme %}
+			<a href="{% url 'educational_programme' educationalprogramme.pk %}">{{ educationalprogramme }}</a>
+			{% endif %}
+		{% endwith %}
+		</li>
 		<li class="list-group-item" >certification type: <strong>{{ certification.get_cert_type_display }}</strong> </li>
 		<li class="list-group-item">public: </li>
 	</ul>

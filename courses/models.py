@@ -10,6 +10,8 @@ from certifications.models import CertificationProgramme
 from certifications.models import Accreditation, Certificate
 from authorities.models import Authority
 
+from certifications.models import Discipline
+
 LANGUAGES = [(c.name, c.name) for c in pycountry.languages]
 
 
@@ -23,6 +25,7 @@ class EducationalProgramme(models.Model):
     institution = models.ForeignKey(
         Authority, related_name='related_edu_programmes')
     title = models.CharField(max_length=250)
+    discipline = models.ForeignKey(Discipline)
     is_active = models.BooleanField()
 
     instructors = models.ManyToManyField(
@@ -69,7 +72,7 @@ class Module(models.Model):
     created_by = models.ForeignKey(User)
 
     def __unicode__(self):
-        return "%s, %s" % (self.educational_programme, self.name)
+        return "%s, %s" % (self.educational_programme, self.description)
 
     class Meta():
         verbose_name = "Didactic Module"

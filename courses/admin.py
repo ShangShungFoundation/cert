@@ -39,11 +39,6 @@ class ModuleInline(admin.StackedInline):
     exclude = ['created_by']
     extra = 1
 
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'created_by', None) is None:
-            obj.created_by_id = request.user.id
-        obj.save()
-
 
 class EducationalProgrammeAdmin(_CreatedAdmin):
 
@@ -57,6 +52,7 @@ class EducationalProgrammeAdmin(_CreatedAdmin):
                 "title",
                 "institution",
                 "is_active",
+                "discipline",
                 "instructors",
             )
         }),
@@ -80,6 +76,14 @@ class EducationalProgrammeAdmin(_CreatedAdmin):
             )
         }),
     )
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if getattr(instance, 'created_by', None) is None:
+                instance.created_by_id = request.user.id
+            instance.save()
+        formset.save_m2m()
 
 
 class ParticipantAdmin(admin.ModelAdmin):
