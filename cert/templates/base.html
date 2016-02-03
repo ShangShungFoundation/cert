@@ -27,52 +27,60 @@
 </head>
 
 <body class="{% block body_class %}{% endblock %}" role="document">
-
-  <div class="navbar navbar-inverse" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Shang Shung Foundation Educational Programms</span>
-        </button>
-        <a class="navbar-brand" href="#">Shang Shung Foundation Educational Programms</a>
-      </div>
+    <a id="skippy" class="sr-only sr-only-focusable" href="#content"><div class="container"><span class="skiplink-text">Skip to main content</span></div></a>
+  <nav class="navbar-default" role="navigation" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+    <div class="container">      
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a href="/" class="navbar-brand"><img src="{{ STATIC_URL }}/img/LOGO_SSF_horizontal_col_web.png" alt="Shang Shung Foundation" height="40px"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse ">
+            <ul class="nav navbar-nav">
+                <li><a href="/educational-programmes/">Educational Programmes</a></li>
+                <li><a href="/certifications/">Certification Programmes</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/admin/" class="">Login</a></li>
+            </ul>
+        </div>
     </div>
-  </div>
+  </nav>
   
-<div role="main">
-    {% if messages %}
-    <ul class="messages panel callout">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+<div role="main" id="main">
+        {% if messages %}
+        <ul class="messages panel callout">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
 
-{% block body %}
-    <header class="container">
-{% block header %}{% endblock header %}
-    </header>
+    {% block body %}
+        <header>
+    {% block header %}
+    
+    
+    {% endblock header %}
+        </header>
 
-    <div id="main" class="container">
-{% block content %}{% endblock content %}
-    </div>
-</div><!-- /main -->
+        <div id="main" class="container">
+    {% block content %}{% endblock content %}
+        </div>
+    </div><!-- /main -->
 
 
     <footer>
         <div class="container">
-          <div class="row">
-            <div class="col-md-12">
               <p>
-                <a href="http://www.shangshunginstitute.org/">Shang Shung Foundation</a>
-                <a href="http://www.shangshungstore.org/">Webstore</a>
+                <a href="http://www.shangshungfoundation.org/">Shang Shung Foundation</a>
+                <a href="http://shop.shangshungfoundation.com/en/">Webstore</a>
                 <a href="http://www.shangshungpublications.org/">Shang Shung Publications</a>
               </p>
               <div class="footer-notice">
                 <p><small>Copyright © 2016 Shang Shung Foundation</small></p>
               </div>
-            </div>
-        </div>
       </div>
     </footer>
 {% endblock body %}
