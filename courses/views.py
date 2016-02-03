@@ -34,3 +34,13 @@ def recruit(request, object_id):
     course = Course.active.get(pk=object_id)
     return render(request, "courses/course.html",
         dict(courses=courses))
+
+
+def _get_opened_courses_for_certification(cert_id):
+    try:
+        educational_programme = EducationalProgramme.active.get(certification_id = cert_id)
+    except EducationalProgramme.DoesNotExist:
+        return []
+    else:
+        courses = Course.objects.opened().filter(educational_programme=educational_programme)
+        return courses

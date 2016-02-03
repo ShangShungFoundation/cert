@@ -3,6 +3,7 @@ from django import forms
 from django.core import validators
 
 from models import CertificationProgramme, Certificate
+from courses.views import _get_opened_courses_for_certification
 
 
 class CertVerifyForm(forms.Form):
@@ -18,8 +19,10 @@ def certifications(request):
 def certification(request, object_id):
     certification = CertificationProgramme.objects.get(pk=object_id)
     cert_verify_form = CertVerifyForm(request.GET)
+    courses = _get_opened_courses_for_certification(certification.pk)
     return render(request, "certifications/certification.html",
         dict(certification=certification,
+            courses=courses,
             cert_verify_form=cert_verify_form) )
 
 
@@ -40,3 +43,9 @@ def certificates(request, certification_id):
 
     return render(request, "certifications/certificates.html",
         dict(certs=certs, search_str=search_str) )
+
+
+def accreditations(request, email):
+    accreditations = Accreditations.objects.all()
+    return render(request, "certifications/accreditations.html",
+        dict(accreditations=accreditations) )

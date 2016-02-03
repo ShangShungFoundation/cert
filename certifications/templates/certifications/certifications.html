@@ -15,17 +15,16 @@
 </p>
 
 <section>
-  <table class="table">
-    <thead>
-      <th>Title</th>
-    </thead>
-    <tbody>
-      {% for certification in certifications %}
-        <tr>
-          <td> <a href="{% url 'certification' certification.id %}">{{ certification }}</a></td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    {% regroup certifications by discipline as discipline_list %}
+    {% for discipline in discipline_list %}
+    <h2>{{ discipline.grouper }}</h2>
+    <ul>
+        {% for certification in discipline.list %}
+        <li>
+            <h4><a href="{% url 'certification' certification.id %}">{{ certification }}</a></h4>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
 </section>
 {% endblock content %}

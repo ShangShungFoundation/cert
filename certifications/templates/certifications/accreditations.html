@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block header %}
+  <h1>{{ certification }}</h1>
+{% endblock header %}
+
+
+
+
+{% block content %}
+<section class="col-sm-8">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Accreditations</h3>
+		</div>
+		<div class="panel-bodylist-group ">
+			{% for accreditation in certification.related_acreditations.all %}
+			<a>{{ accreditation.released_at }} at {{ accreditation.location }}</a>
+			{% endfor %}
+		</div>
+	</div>
+
+</section>
+
+{% endblock content %} 

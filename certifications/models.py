@@ -31,7 +31,8 @@ class CertificationProgramme(models.Model):
     cert_type = models.PositiveSmallIntegerField(choices=TYPES)
 
     authority = models.ForeignKey("authorities.Authority", verbose_name='released by')
-
+    certifiers = models.ManyToManyField(User)
+    
     discipline = models.ForeignKey(Discipline)
     
     expiery = models.PositiveSmallIntegerField(
@@ -41,11 +42,13 @@ class CertificationProgramme(models.Model):
     summary = models.TextField()
     description = models.TextField()
     
-    prerequisities = models.TextField(blank=True, null=True)
+    
     achivement = models.TextField("habilitations & Competences")
 
     public = models.TextField(
         help_text="defines public to which certificate is targeted")
+
+    prerequisities = models.TextField(blank=True, null=True)
     requires = models.ForeignKey(
         "CertificationProgramme",
         blank=True, null=True,
@@ -53,10 +56,7 @@ class CertificationProgramme(models.Model):
 
     cert_template = models.FileField(blank=True, null=True,)
 
-    certifiers = models.ManyToManyField(
-        User, limit_choices_to={'groups': 7},
-        help_text = "only persons from 'instructors' group are available")  
-
+    
     created_by = models.ForeignKey(User, related_name='cert_creator')
     created_at = models.DateTimeField(auto_now_add=True)
 
