@@ -37,10 +37,9 @@ class EducationalProgramme(models.Model):
         help_text="public to which programme is directed")
 
     summary = models.TextField()
-    programme = models.TextField()
-
     objective = models.TextField()
     achivement = models.TextField("knowledge acquired")
+    #available_formats = models.TextField()
     certification = models.ForeignKey(
         CertificationProgramme, blank=True, null=True)
 

@@ -7,10 +7,8 @@ from students.models import Student
 
 class Discipline(models.Model):
     name = models.CharField(max_length=250)
-    linage = models.CharField(
-        blank=True, null=True,
-        max_length=250)
-    history = models.TextField(blank=True, null=True)
+    history = models.TextField("history & lineage", 
+        blank=True, null=True)
 
     def __unicode__(self):
         return u"%s" % self.name
@@ -35,20 +33,18 @@ class CertificationProgramme(models.Model):
     
     discipline = models.ForeignKey(Discipline)
     
-    expiery = models.PositiveSmallIntegerField(
+    expiery = models.PositiveSmallIntegerField("validity",
         blank=True, null=True,
         help_text='in years')
 
     summary = models.TextField()
-    description = models.TextField()
-    
     
     achivement = models.TextField("habilitations & Competences")
 
     public = models.TextField(
         help_text="defines public to which certificate is targeted")
 
-    prerequisities = models.TextField(blank=True, null=True)
+    prerequisities = models.TextField("prerequisites", blank=True, null=True)
     requires = models.ForeignKey(
         "CertificationProgramme",
         blank=True, null=True,

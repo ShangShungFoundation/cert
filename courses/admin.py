@@ -59,13 +59,13 @@ class EducationalProgrammeAdmin(_CreatedAdmin):
         ("description", {
             'fields': (
                 "summary",
-                "programme",
             )
         }),
         ("objective", {
             'fields': (
                 "objective",
                 "achivement",
+                "available_formats",
                 "certification",
             )
         }),
