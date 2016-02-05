@@ -27,19 +27,19 @@ class CertificationProgrammeAdmin(admin.ModelAdmin):
                 "certifiers",
             )
         }),
+        ("description", {
+            'fields': (
+                "summary",
+                "achivement",
+            )
+        }),
         ("requirements", {
             'fields': (
                 "requires",
                 "prerequisities",
             )
         }),
-        ("description", {
-            'fields': (
-                "summary",
-                "description",
-                "achivement",
-            )
-        }),
+
     )
 
     def save_model(self, request, obj, form, change):

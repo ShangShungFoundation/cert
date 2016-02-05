@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+  <h1>{{ discipline.name }}</h1>
+{% endblock header %}
+
+{% block content %}
+<section class="col-sm-8">
+{{ discipline.history|linebreaks }}
+</section>
+
+<section class="col-sm-4">
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title center" >Related Educational Programmes</h3>
+		</div>
+		<div class="list-group">
+			{% for educational_programme in educational_programmes%}
+			<a href="{% url 'educational_programme' educational_programme.id %}" class="list-group-item">
+				<h4>{{ educational_programme }}</h4>
+			</a>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title center" >Upcaming Courses</h3>
+		</div>
+		<div class="list-group">
+			{% for course in courses%}
+			<a href="{% url 'course' course.id %}" class="list-group-item">
+				<h4>{{ courses.name }}</h4>
+			</a>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title center" >Related Certification Programmes</h3>
+		</div>
+		<div class="list-group">
+			{% for certification_programme in certification_programmes%}
+			<a href="{% url 'certification' certification_programme.id %}" class="list-group-item">
+				<h4>{{ certification_programme.name }}</h4>
+			</a>
+			{% endfor %}
+		</div>
+	</div>
+
+</section>
+
+{% endblock content %} 

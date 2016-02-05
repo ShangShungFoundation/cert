@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from models import EducationalProgramme, Course, Fee
-
+from certifications.models import Discipline, CertificationProgramme
 
 def programmes(request):
     programmes = EducationalProgramme.active.all()
@@ -34,6 +34,17 @@ def recruit(request, object_id):
     course = Course.active.get(pk=object_id)
     return render(request, "courses/course.html",
         dict(courses=courses))
+
+
+def discipline(request, object_id):
+    discipline = Discipline.objects.get(pk=object_id)
+    educational_programmes = EducationalProgramme.active.filter(discipline_id=object_id)
+    courses = Course.objects.filter(educational_programme__discipline_id=object_id)
+    certification_programmes = CertificationProgramme.objects.filter(discipline_id=object_id)
+    return render(request, "courses/discipline.html",
+        dict(discipline=discipline, 
+            educational_programmes=educational_programmes,
+            certification_programmes=certification_programmes))
 
 
 def _get_opened_courses_for_certification(cert_id):

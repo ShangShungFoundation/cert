@@ -7,6 +7,7 @@ from students.models import Student
 
 class Discipline(models.Model):
     name = models.CharField(max_length=250)
+    image = models.ImageField()
     history = models.TextField("history & lineage", 
         blank=True, null=True)
 

@@ -41,7 +41,7 @@
 <section class="col-sm-4">
 	<ul class="list-group">
 		<li class="list-group-item">authority: <strong>{{ certification.authority }}</strong> </li>
-		<li class="list-group-item" >discipline: <strong>{{ certification.discipline }}</strong> </li>
+		<li class="list-group-item" >discipline: <a href="{% url 'discipline' programme.discipline.id %}">{{ programme.discipline }}</a></li><strong>{{ certification.discipline }}</strong> </li>
 		<li class="list-group-item" >Related Eduactional Programme: {% with educationalprogramme=certification.educationalprogramme_set.all.0 %}
 			{% if educationalprogramme %}
 			<a href="{% url 'educational_programme' educationalprogramme.pk %}">{{ educationalprogramme }}</a>
